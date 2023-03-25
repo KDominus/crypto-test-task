@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { DealsDash } from './components/DealsDash';
+import { EmptyComponent } from './components/EmptyComponent';
+import { ExchangeForm } from './components/ExchangeForm';
 import { Navigation } from './components/Navigation';
 import { CryptoExchange } from './pages/CryptoExchange';
 
@@ -8,7 +10,8 @@ function App() {
     <>
       <Navigation />
       <Routes>
-        <Route path='/' element={<DealsDash></DealsDash>} />
+        <Route path='/' element={< ExchangeForm/>} />
+        <Route path='/deals' element={<DealsDash></DealsDash>} />
         <Route path='/exchange' element={<CryptoExchange></CryptoExchange>} />
       </Routes>
     </>

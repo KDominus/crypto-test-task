@@ -1,0 +1,35 @@
+.exchange-wrap {
+  /* background-color: gray; */
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  margin: 0 auto;
+}
+
+.form-btc-price {
+  /*  */
+}
+
+.form-btc-quantity {
+  /*  */
+}
+
+.form-buy-total {
+  /*  */
+}
+
+.btn-buy-btc {
+  background-color: greenyellow;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
