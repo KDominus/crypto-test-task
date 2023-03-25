@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useExchangeMarket } from '../hooks/exchagemarket';
 import { OutlinedInput } from '@mui/material';
 import { Component } from 'react';
+import { IJsonCryptoCurrency, IStreamDummy } from '../models';
 
 const exchangeTheme = createTheme({
   components: {
@@ -37,6 +38,11 @@ const exchangeTheme = createTheme({
 export function ExchangeForm() {
   const { loading, error, exchangeValue } = useExchangeMarket();
 
+  //decompose resp
+  // const currentExchangeRatio = exchangeValue.price;
+
+  // console.log(currentExchangeRatio);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -57,70 +63,72 @@ export function ExchangeForm() {
             alignItems: 'center',
           }}
         >
-          <Box component='form' onSubmit={handleSubmit} noValidate>
-            <TextField
-              inputProps={{
-                Step: 0.01,
-                min: 0.01,
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>Цена</InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position='end'>USDT</InputAdornment>
-                ),
-              }}
-              fullWidth
-              type='number'
-              defaultValue={2000}
-              id='price'
-              name='price'
-              autoFocus
-              placeholder='btc price'
-            />
-            <TextField
-              inputProps={{
-                Step: 0.00001,
-                min: 0.00001,
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>Количество</InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position='end'>BTC</InputAdornment>
-                ),
-              }}
-              fullWidth
-              name='quantity'
-              type='number'
-              id='quantity'
-              placeholder='usdt'
-            />
-            <TextField
-              inputProps={{
-                Step: 0.0000001,
-                min: 0.0000001,
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>Всего</InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position='end'>USDT</InputAdornment>
-                ),
-              }}
-              fullWidth
-              name='quantity'
-              type='number'
-              id='quantity'
-            />
+          {exchangeValue && (
+            <Box component='form' onSubmit={handleSubmit} noValidate>
+              <TextField
+                inputProps={{
+                  step: 0.01,
+                  min: 0.01,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>Цена</InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position='end'>USDT</InputAdornment>
+                  ),
+                }}
+                fullWidth
+                type='number'
+                defaultValue={exchangeValue.price}
+                id='price'
+                name='price'
+                autoFocus
+                placeholder='btc price'
+              />
+              <TextField
+                inputProps={{
+                  step: 0.00001,
+                  min: 0.00001,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>Количество</InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position='end'>BTC</InputAdornment>
+                  ),
+                }}
+                fullWidth
+                name='quantity'
+                type='number'
+                id='quantity'
+                placeholder='usdt'
+              />
+              <TextField
+                inputProps={{
+                  step: 0.0000001,
+                  min: 0.0000001,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>Всего</InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position='end'>USDT</InputAdornment>
+                  ),
+                }}
+                fullWidth
+                name='quantity'
+                type='number'
+                id='quantity'
+              />
 
-            <Button type='submit' fullWidth variant='contained'>
-              Купить BTC
-            </Button>
-          </Box>
+              <Button type='submit' fullWidth variant='contained'>
+                Купить BTC
+              </Button>
+            </Box>
+          )}
         </Box>
       </Container>
     </ThemeProvider>

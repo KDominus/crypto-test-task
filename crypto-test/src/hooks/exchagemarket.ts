@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { IStreamDummy } from '../models';
+import { IStreamDummy, IJsonCryptoCurrency } from '../models';
 import axios, { AxiosError } from 'axios';
 
 export function useExchangeMarket() {
   const defaultExchangeValueState = {
-    exchangeRatio: 0,
-    usdtCount: 0,
-    bitcoinCount: 0,
+    symbol: 'BTCUSDT',
+    price: '0',
+    time: 0,
   };
 
-  const [exchangeValue, setExchangeValue] = useState<any>([]);
+  const cryptoCurrencyUrl =
+    'https://fapi.binance.com/fapi/v1/ticker/price?symbol=BTCUSDT';
+
+  const [exchangeValue, setExchangeValue] = useState<IJsonCryptoCurrency>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -17,17 +20,13 @@ export function useExchangeMarket() {
     return 0;
   }
 
-  //TODO: interface for responce
-
   async function fetchExchangeValue() {
     try {
       setError('');
       setLoading(true);
-      const response = await axios.get<any>(
-        'https://fapi.binance.com/fapi/v1/ticker/price?symbol=BTCUSDT',
-      );
-      console.log(response.data, '!!resp');
-      setExchangeValue(response.data);
+      const response = await axios.get<IJsonCryptoCurrency>(cryptoCurrencyUrl);
+      // console.log(response.data, '!!resp');
+      setExchangeValue(response.data as IJsonCryptoCurrency);
       setLoading(false);
     } catch (e: unknown) {
       const error = e as AxiosError;
@@ -37,8 +36,10 @@ export function useExchangeMarket() {
   }
 
   useEffect(() => {
-    fetchExchangeValue();
-  }, []);
+    if (!exchangeValue) {
+      fetchExchangeValue();
+    }
+  }, [exchangeValue]);
 
   return { exchangeValue, error, loading };
 }
