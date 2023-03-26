@@ -3,11 +3,11 @@ import { IStreamDummy, IJsonCryptoCurrency } from '../models';
 import axios, { AxiosError } from 'axios';
 
 export function useExchangeMarket() {
-  const defaultExchangeValueState = {
-    symbol: 'BTCUSDT',
-    price: '0',
-    time: 0,
-  };
+  // const defaultExchangeValueState = {
+  //   symbol: 'BTCUSDT',
+  //   price: '0',
+  //   time: 0,
+  // };
 
   const cryptoCurrencyUrl =
     'https://fapi.binance.com/fapi/v1/ticker/price?symbol=BTCUSDT';
@@ -16,9 +16,7 @@ export function useExchangeMarket() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  function exchangeInputsHandler() {
-    return 0;
-  }
+ 
 
   async function fetchExchangeValue() {
     try {
@@ -41,5 +39,5 @@ export function useExchangeMarket() {
     }
   }, [exchangeValue]);
 
-  return { exchangeValue, error, loading };
+  return { exchangeValue, setExchangeValue, error, loading };
 }
