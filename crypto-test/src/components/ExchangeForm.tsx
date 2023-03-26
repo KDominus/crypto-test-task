@@ -16,6 +16,7 @@ import { useExchangeMarket } from '../hooks/exchagemarket';
 import { OutlinedInput } from '@mui/material';
 import React, { Component, useEffect, useState } from 'react';
 import { IJsonCryptoCurrency, IStreamDummy } from '../models';
+import axios, { AxiosError } from 'axios';
 
 const exchangeTheme = createTheme({
   components: {
@@ -36,12 +37,90 @@ const exchangeTheme = createTheme({
 });
 
 export function ExchangeForm() {
-  const { loading, error, exchangeValue, setExchangeValue } =
-    useExchangeMarket();
+  // const { loading, error, exchangeValue, setExchangeValue } =
+  //   useExchangeMarket();
+  const cryptoCurrencyUrl =
+    'https://fapi.binance.com/fapi/v1/ticker/price?symbol=BTCUSDT';
 
-  const [fetchedExchange, setFetchedExchange] = useState(exchangeValue.price);
+  const defaultExchangeValueState: IJsonCryptoCurrency = {
+    symbol: 'BTCUSDT',
+    price: '0',
+    time: 0,
+  };
 
-  
+  const [exchangeValue, setExchangeValue] = useState<IJsonCryptoCurrency>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // async function fetchExchangeValue() {
+  //   try {
+  //     setError('');
+  //     setLoading(true);
+  //     const response = await axios.get<IJsonCryptoCurrency>(cryptoCurrencyUrl);
+  //     // console.log(response.data, '!!resp');
+  //     setExchangeValue(response.data as IJsonCryptoCurrency);
+  //     setLoading(false);
+  //     // return response.data as IJsonCryptoCurrency;
+  //   } catch (e: unknown) {
+  //     const error = e as AxiosError;
+  //     setLoading(false);
+  //     setError(error.message);
+  //   }
+  // }
+
+  async function fetchExchangeValue() {
+    try {
+      setError('');
+      setLoading(true);
+      const response = await axios.get<IJsonCryptoCurrency>(cryptoCurrencyUrl);
+      // console.log(response.data, '!!resp');
+      setExchangeValue(response.data as IJsonCryptoCurrency);
+      setLoading(false);
+      // return response.data as IJsonCryptoCurrency;
+      setFormData((prev) => {
+        return {
+          ...prev,
+          ['price']:response.data.price,
+        };
+      });
+    } catch (e: unknown) {
+      const error = e as AxiosError;
+      setLoading(false);
+      setError(error.message);
+    }
+  }
+
+  useEffect(() => {
+    if (!exchangeValue) {
+      // async function fetchExchangeValue() {
+      //   try {
+      //     setError('');
+      //     setLoading(true);
+      //     const response = await axios.get<IJsonCryptoCurrency>(
+      //       cryptoCurrencyUrl,
+      //     );
+      //     // console.log(response.data, '!!resp');
+      //     setExchangeValue(response.data as IJsonCryptoCurrency);
+      //     setLoading(false);
+      //     // return response.data as IJsonCryptoCurrency;
+      //     setFormData((prev) => {
+      //       return {
+      //         ...prev,
+      //         price: exchangeValue.price,
+      //       };
+      //     });
+      //   } catch (e: unknown) {
+      //     const error = e as AxiosError;
+      //     setLoading(false);
+      //     setError(error.message);
+      //   }
+      // }
+      fetchExchangeValue();
+      // setFormData(prev => {...prev,'price':exchangeValue!.price })
+    }
+  }, [exchangeValue]);
+
+  // const [fetchedExchange, setFetchedExchange] = useState(exchangeValue.price);
 
   //decompose resp
   // const currentExchangeRatio = exchangeValue.price;
@@ -53,10 +132,6 @@ export function ExchangeForm() {
     total: '',
   };
   const [formData, setFormData] = useState(defaultFormData);
-
-    useEffect(() => {
-      setFormData((prev) => {...prev,['price']:exchangeValue?.price })
-    }, [ exchangeValue?.price]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -103,11 +178,11 @@ export function ExchangeForm() {
   };
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (false) {
+    if (e.target.name === '') {
       setFormData((prev) => {
         return {
           ...prev,
-          [e.target.name]: exchangeValue?.price,
+          [e.target.name]: exchangeValue!.price,
         };
       });
     } else {
