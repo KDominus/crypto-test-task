@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path='/' element={< ExchangeForm/>} />
         <Route path='/deals' element={<DealsDash></DealsDash>} />
-        <Route path='/exchange' element={<CryptoExchange></CryptoExchange>} />
+        <Route path='/exchange' element={<ExchangeForm></ExchangeForm>} />
       </Routes>
     </>
   );
