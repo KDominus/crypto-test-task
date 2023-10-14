@@ -1,0 +1,39 @@
+.deal-entity {
+  /* border: 3px solid white; */
+  display: flex;
+  flex-direction: row;
+  color: rgb(183, 189, 198);
+  font-size: 12px;
+  /* color: red; */
+}
+
+.deal-entity-price {
+  width: 34%;
+  cursor: pointer;
+  font-weight: 400;
+  padding: 0px 12px 0px 16px;
+  text-align: left;
+}
+
+.deal-entity-amount {
+  width: 34%;
+  text-align: right;
+}
+.deal-entity-time {
+  width: 32%;
+  text-align: right;
+  color: rgb(183, 189, 198);
+}
+
+.deal-entity-sell {
+  color: rgb(246, 70, 93);
+}
+
+.deal-entity-buy {
+  color: rgb(14, 203, 129);
+}
+
+.utility-vars{
+  /* rgb(234, 236, 239); white color */
+/* rgb(30, 33, 38) background*/
+}
